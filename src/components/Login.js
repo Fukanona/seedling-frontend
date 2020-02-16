@@ -4,6 +4,8 @@ import axios from 'axios'
 import seedImage from '../images/seed.png'
 import { useHistory, withRouter } from 'react-router-dom'
 
+var auth = false
+export {auth}
 function Login() {
 
     const [username, setUsername] = useState("")
@@ -13,15 +15,13 @@ function Login() {
  const validateLogin = (e) => {
     e.preventDefault();
     axios.interceptors.response.use(function (response) {
-        // Any status code that lie within the range of 2xx cause this function to trigger
-        // Do something with response data
+        auth = true
         history.push("/home/")
         console.log("entrei2")
         return response
       }, function (error) {
-        // Any status codes that falls outside the range of 2xx cause this function to trigger
-        // Do something with response error
         document.getElementById("loginError").innerHTML = "[Error] Incorrect username and/or password!"
+        auth = false
         return error.response
       })
     axios.get("https://localhost:5001/api/seedling/user/login?username=" + username + "&password=" + password)
