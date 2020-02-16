@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import '../App.css'
 import axios from 'axios'
+import { withRouter } from 'react-router-dom'
 
 function Home() {
 
@@ -14,13 +15,13 @@ function Home() {
   const getProblem = () => {
     var id = document.getElementById("select").value
     axios.get("https://localhost:5001/api/seedling/problem/" + id).then((response) => {
-      setProblem(response.data)
+      setProblem(response.data.content)
     })
   }
 
   const getAllProblemsIds = () => {
-    axios.get("https://localhost:5001/api/seedling/problem/all").then((response) => {
-      setIds(response.data)
+    axios.get("https://localhost:5001/api/seedling/problem/ids").then((response) => {
+      setIds(response.data.content)
     })
   }
 
@@ -51,4 +52,4 @@ function Home() {
   )
 }
 
-export default Home
+export default withRouter(Home)

@@ -1,11 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../App.css'
 import axios from 'axios'
 import seedImage from '../images/seed.png'
+import { useHistory, withRouter } from 'react-router-dom'
 
 function Login() {
 
- 
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
+    const history = useHistory()
+
+ const validateLogin = (e) => {
+    e.preventDefault();
+    axios.interceptors.response.use(function (response) {
+        // Any status code that lie within the range of 2xx cause this function to trigger
+        // Do something with response data
+        history.push("/home/")
+        console.log("entrei2")
+        return response
+      }, function (error) {
+        // Any status codes that falls outside the range of 2xx cause this function to trigger
+        // Do something with response error
+        document.getElementById("loginError").innerHTML = "[Error] Incorrect username and/or password!"
+        return error.response
+      })
+    axios.get("https://localhost:5001/api/seedling/user/login?username=" + username + "&password=" + password)
+ }
 
   return ( 
       <div>
@@ -19,20 +39,21 @@ function Login() {
                     <p>
                         <label style={{textAlign: "center"}}>
                             Username:
-                            <input type="text" name="username" />
+                            <input type="text" name="username" onChange={(event) => setUsername(event.target.value)} />
                         </label>
                     </p>
                     <p>
                         <label style={{textAlign: "center"}}>
                             Password:
-                            <input type="password" name="password" />
+                            <input type="password" name="password" onChange={(event) => setPassword(event.target.value)} />
                         </label>
                     </p>
-                    <input type="submit" value="Enviar" />
+                    <input type="submit" value="Login" onClick={(e) => validateLogin(e)}/>
                 </form>
+                <p align="center" id="loginError"></p>
           </div>
       </div>
   )
 }
 
-export default Login
+export default withRouter(Login)
