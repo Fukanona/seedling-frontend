@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import './App.css'
+import '../App.css'
 import axios from 'axios'
+import { withRouter } from 'react-router-dom'
 
 function Home() {
 
@@ -14,13 +15,13 @@ function Home() {
   const getProblem = () => {
     var id = document.getElementById("select").value
     axios.get("https://localhost:5001/api/seedling/problem/" + id).then((response) => {
-      setProblem(response.data)
+      setProblem(response.data.content)
     })
   }
 
   const getAllProblemsIds = () => {
-    axios.get("https://localhost:5001/api/seedling/problem/").then((response) => {
-      setIds(response.data)
+    axios.get("https://localhost:5001/api/seedling/problem/ids").then((response) => {
+      setIds(response.data.content)
     })
   }
 
@@ -43,11 +44,12 @@ function Home() {
         <div>
           <h1 align="center">{problem.name}</h1>
           <h3 align="center">{problem.level}</h3>
-          <p align="center">{problem.description}</p>  
+          <h6 align="center">By: {problem.author.username}</h6>
+          <p align="center" dangerouslySetInnerHTML={{ __html: problem.description }}></p>  
         </div>
       )}</div>
     </div>
   )
 }
 
-export default Home
+export default withRouter(Home)
