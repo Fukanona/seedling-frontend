@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import './App.css'
+import '../App.css'
 import axios from 'axios'
 
 function Home() {
@@ -19,7 +19,7 @@ function Home() {
   }
 
   const getAllProblemsIds = () => {
-    axios.get("https://localhost:5001/api/seedling/problem/").then((response) => {
+    axios.get("https://localhost:5001/api/seedling/problem/all").then((response) => {
       setIds(response.data)
     })
   }
@@ -43,7 +43,8 @@ function Home() {
         <div>
           <h1 align="center">{problem.name}</h1>
           <h3 align="center">{problem.level}</h3>
-          <p align="center">{problem.description}</p>  
+          <h6 align="center">By: {problem.author.username}</h6>
+          <p align="center" dangerouslySetInnerHTML={{ __html: problem.description }}></p>  
         </div>
       )}</div>
     </div>
