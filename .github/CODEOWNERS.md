@@ -1,0 +1,1 @@
+* @Fukanona/org-owners
